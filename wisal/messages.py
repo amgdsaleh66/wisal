@@ -1,8 +1,6 @@
 """
-نظام الرسائل ثنائية اللغة (عربي/إنجليزي) لأداة وصال.
 Bilingual (Arabic/English) message system for the Wisal CLI tool.
 
-يتم اختيار اللغة تلقائياً من متغير البيئة LANG، أو يمكن فرضها عبر --lang.
 Language is auto-detected from the LANG environment variable, or forced via --lang.
 """
 
@@ -16,7 +14,7 @@ class Lang(str, Enum):
 
 
 def detect_language() -> Lang:
-    """اكتشاف اللغة المناسبة من بيئة النظام."""
+    """Detect the appropriate language from the system environment. Defaults to English."""
     env_lang = os.environ.get("WISAL_LANG", "").lower()
     if env_lang in ("ar", "arabic"):
         return Lang.AR

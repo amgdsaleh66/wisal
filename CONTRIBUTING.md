@@ -1,8 +1,8 @@
-# المساهمة في وصال / Contributing to Wisal
+# Contributing to Wisal
 
-شكراً لاهتمامك بالمساهمة! / Thanks for your interest in contributing!
+Thanks for your interest in contributing!
 
-## خطوات البدء / Getting Started
+## Getting Started
 
 ```bash
 git clone https://github.com/amgdsaleh66/wisal.git
@@ -11,17 +11,15 @@ pip install -e ".[dev]"
 pytest tests/
 ```
 
-## إضافة رسائل جديدة / Adding New Messages
+## Adding New Messages
 
-كل الرسائل موجودة في `wisal/messages.py`. عند إضافة رسالة جديدة، يجب توفيرها
-بالعربي والإنجليزي معاً في نفس الوقت.
+All user-facing messages live in `wisal/messages.py`. When adding a new
+message, you must provide both Arabic and English versions at the same time,
+since bilingual support is the core feature of this project.
 
-All messages live in `wisal/messages.py`. When adding a new message, you must
-provide both Arabic and English versions at the same time.
+## Submitting a Pull Request
 
-## إرسال Pull Request
-
-1. Fork المشروع
-2. أنشئ فرعاً جديداً (`git checkout -b feature/my-feature`)
-3. تأكد أن الاختبارات تعمل (`pytest tests/`)
-4. أرسل Pull Request مع وصف واضح للتغيير
+1. Fork the project
+2. Create a new branch (`git checkout -b feature/my-feature`)
+3. Make sure the tests pass (`pytest tests/`)
+4. Open a Pull Request with a clear description of the change

@@ -1,8 +1,7 @@
 """
-واجهة سطر الأوامر لأداة وصال.
 Command-line interface for the Wisal tool.
 
-الاستخدام / Usage:
+Usage:
     wisal convert input.json output.csv
     wisal convert data.csv data.yaml --flatten
     wisal convert data.json out.csv --dry-run --lang ar
@@ -23,7 +22,7 @@ __version__ = "0.1.0"
 
 
 def _apply_digit_normalization(data):
-    """تطبيق توحيد الأرقام بشكل متكرر على كل النصوص في البنية."""
+    """Recursively apply digit normalization to every string in the structure."""
     if isinstance(data, dict):
         return {k: _apply_digit_normalization(v) for k, v in data.items()}
     if isinstance(data, list):
@@ -39,13 +38,12 @@ def build_parser() -> argparse.ArgumentParser:
         "--lang",
         choices=["ar", "en"],
         default=None,
-        help="لغة الرسائل / Message language (ar/en). Default: auto-detect.",
+        help="Message language (ar/en). Default: auto-detect from system locale.",
     )
 
     parser = argparse.ArgumentParser(
         prog="wisal",
         description=(
-            "وصال — أداة تحويل بيانات ثنائية اللغة بين JSON وCSV وYAML.\n"
             "Wisal — a bilingual (Arabic/English) data conversion tool for JSON, CSV, and YAML."
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -59,35 +57,35 @@ def build_parser() -> argparse.ArgumentParser:
 
     convert = subparsers.add_parser(
         "convert",
-        help="تحويل ملف من صيغة إلى أخرى / Convert a file from one format to another",
+        help="Convert a file from one format to another",
         parents=[lang_parent],
     )
-    convert.add_argument("input", help="ملف الإدخال / Input file")
-    convert.add_argument("output", help="ملف الإخراج / Output file")
+    convert.add_argument("input", help="Input file")
+    convert.add_argument("output", help="Output file")
     convert.add_argument(
         "--flatten",
         action="store_true",
-        help="تفكيك الحقول المتداخلة إلى أعمدة منفصلة (لـ CSV) / Flatten nested fields into columns (for CSV)",
+        help="Flatten nested fields into columns (for CSV output)",
     )
     convert.add_argument(
         "--normalize-digits",
         action="store_true",
-        help="توحيد الأرقام العربية-الهندية إلى أرقام لاتينية / Normalize Arabic-Indic digits to Latin digits",
+        help="Normalize Arabic-Indic digits (٠-٩) to Latin digits",
     )
     convert.add_argument(
         "--dry-run",
         action="store_true",
-        help="معاينة الناتج دون حفظ ملف / Preview output without writing a file",
+        help="Preview output without writing a file",
     )
     convert.add_argument(
         "--no-validate",
         action="store_true",
-        help="تخطي فحوصات جودة البيانات / Skip data quality checks",
+        help="Skip data quality checks",
     )
     convert.add_argument(
         "--quiet",
         action="store_true",
-        help="إخفاء التحذيرات، إظهار الأخطاء فقط / Suppress warnings, show only errors",
+        help="Suppress warnings, show only errors",
     )
 
     return parser

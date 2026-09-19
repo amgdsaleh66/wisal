@@ -1,6 +1,6 @@
-"""استثناءات وصال المخصصة. Custom Wisal exceptions."""
+"""Custom Wisal exceptions."""
 
 
 class WisalError(Exception):
-    """خطأ متوقع يجب عرضه للمستخدم برسالة واضحة، دون traceback كامل."""
+    """An expected error to show the user as a clear message, without a full traceback."""
     pass

@@ -1,5 +1,4 @@
 """
-فحص جودة البيانات قبل التحويل: أنواع مختلطة، أرقام مختلطة، حقول ناقصة.
 Data quality checks prior to conversion: mixed types, mixed digits, missing fields.
 """
 
@@ -21,8 +20,8 @@ def _python_type_name(value: Any) -> str:
 
 def validate_rows(rows: list[dict], warn) -> None:
     """
-    تشغيل جميع فحوصات الجودة على قائمة صفوف (بعد تطبيعها إلى dicts)
-    وإصدار تحذيرات عبر دالة warn المُمررة.
+    Run all quality checks on a list of rows (already normalized to dicts)
+    and emit warnings through the provided warn function.
     """
     if not rows:
         return
@@ -35,7 +34,7 @@ def validate_rows(rows: list[dict], warn) -> None:
             columns.setdefault(key, []).append(value)
 
     for column, values in columns.items():
-        # فحص الأنواع المختلطة
+        # Check for mixed types
         types_seen = {}
         for idx, value in enumerate(values):
             type_name = _python_type_name(value)
@@ -54,7 +53,7 @@ def validate_rows(rows: list[dict], warn) -> None:
                 )
             )
 
-        # فحص الأرقام العربية-اللاتينية المختلطة
+        # Check for mixed Arabic-Indic/Latin digits
         str_values = [v for v in values if isinstance(v, str)]
         if str_values and detect_column_digit_issues(str_values):
             warn(t("mixed_digits_warning", column=column))

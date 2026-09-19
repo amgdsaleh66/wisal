@@ -1,11 +1,9 @@
 """
-أدوات مساعدة للتعامل مع خصائص النصوص العربية في البيانات.
 Helper utilities for handling Arabic-specific text quirks in data.
 """
 
 import re
 
-# جدول تحويل الأرقام العربية-الهندية إلى أرقام لاتينية
 # Arabic-Indic digit to Latin digit mapping
 ARABIC_INDIC_DIGITS = "٠١٢٣٤٥٦٧٨٩"
 LATIN_DIGITS = "0123456789"
@@ -16,17 +14,17 @@ _LATIN_DIGIT_RE = re.compile(r"[0-9]")
 
 
 def contains_arabic_indic_digits(text: str) -> bool:
-    """هل يحتوي النص على أرقام عربية-هندية؟"""
+    """Return True if the text contains Arabic-Indic digits."""
     return bool(_ARABIC_DIGIT_RE.search(text))
 
 
 def has_mixed_digits(text: str) -> bool:
-    """هل يحتوي النص على مزيج من الأرقام العربية واللاتينية معاً؟"""
+    """Return True if the text mixes Arabic-Indic and Latin digits."""
     return bool(_ARABIC_DIGIT_RE.search(text)) and bool(_LATIN_DIGIT_RE.search(text))
 
 
 def normalize_digits(text: str) -> str:
-    """تحويل جميع الأرقام العربية-الهندية في النص إلى أرقام لاتينية."""
+    """Convert all Arabic-Indic digits in the text to Latin digits."""
     if not isinstance(text, str):
         return text
     return text.translate(_DIGIT_TRANSLATION)
@@ -34,8 +32,9 @@ def normalize_digits(text: str) -> str:
 
 def likely_encoding_issue(raw_bytes: bytes) -> str | None:
     """
-    محاولة اكتشاف إذا كان الملف بترميز غير UTF-8 شائع للنصوص العربية
-    (مثل Windows-1256)، وإرجاع اسم الترميز المرجّح أو None إذا كان UTF-8 سليماً.
+    Try to detect whether the file uses a common non-UTF-8 encoding for
+    Arabic text (such as Windows-1256), returning the likely encoding name,
+    or None if the bytes are valid UTF-8.
     """
     try:
         raw_bytes.decode("utf-8")
@@ -53,7 +52,7 @@ def likely_encoding_issue(raw_bytes: bytes) -> str | None:
 
 
 def detect_column_digit_issues(values: list[str]) -> bool:
-    """فحص قائمة قيم عمود واحد بحثاً عن أرقام مختلطة عبر الصفوف."""
+    """Check a single column's values across rows for mixed digit systems."""
     joined_has_arabic = any(contains_arabic_indic_digits(v) for v in values if isinstance(v, str))
     joined_has_latin = any(_LATIN_DIGIT_RE.search(v) for v in values if isinstance(v, str))
     return joined_has_arabic and joined_has_latin

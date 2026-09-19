@@ -1,5 +1,4 @@
 """
-قراءة وكتابة صيغ البيانات المدعومة: JSON, CSV, YAML.
 Reading and writing supported data formats: JSON, CSV, YAML.
 """
 
@@ -38,7 +37,6 @@ def read_file_bytes(path: Path) -> bytes:
 
 def load_data(path: Path, warn) -> Any:
     """
-    تحميل البيانات من ملف بناءً على امتداده، مع فحص الترميز.
     Load data from a file based on its extension, checking encoding along the way.
     """
     fmt = format_from_extension(path)
@@ -84,7 +82,7 @@ def _flatten_dict(d: dict, parent_key: str = "", sep: str = ".") -> dict:
 
 
 def _rows_from_data(data: Any, flatten: bool, warn) -> list[dict]:
-    """تطبيع أي بنية بيانات (قائمة أو كائن) إلى قائمة صفوف مناسبة لـ CSV."""
+    """Normalize any data structure (list or object) into a list of CSV-ready rows."""
     if isinstance(data, dict):
         data = [data]
     if not isinstance(data, list):
@@ -111,7 +109,6 @@ def _rows_from_data(data: Any, flatten: bool, warn) -> list[dict]:
 
 def write_data(data: Any, path: Path, flatten: bool, warn) -> None:
     """
-    كتابة البيانات إلى ملف بناءً على امتداده.
     Write data to a file based on its extension.
     """
     fmt = format_from_extension(path)
@@ -143,7 +140,7 @@ def write_data(data: Any, path: Path, flatten: bool, warn) -> None:
 
 
 def write_stdout(data: Any, fmt: str, flatten: bool, warn) -> None:
-    """كتابة الناتج إلى الشاشة (لوضع المعاينة dry-run)."""
+    """Write the output to stdout (for dry-run preview mode)."""
     if fmt == "json":
         sys.stdout.write(json.dumps(data, ensure_ascii=False, indent=2) + "\n")
     elif fmt == "yaml":

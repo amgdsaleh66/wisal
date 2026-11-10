@@ -87,6 +87,19 @@ def test_convert_json_to_yaml(tmp_path):
     assert "قيمة" in content
 
 
+def test_convert_directory_input_returns_clean_error(tmp_path):
+    input_dir = tmp_path / "input.json"
+    input_dir.mkdir()
+    result = subprocess.run(
+        [sys.executable, "-m", "wisal.cli", "convert", str(input_dir), str(tmp_path / "out.csv"), "--lang", "en"],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 1
+    assert "Traceback" not in result.stderr
+    assert "was not found" in result.stderr
+
+
 def test_dry_run_does_not_write_file(tmp_path):
     input_file = tmp_path / "input.json"
     output_file = tmp_path / "output.csv"

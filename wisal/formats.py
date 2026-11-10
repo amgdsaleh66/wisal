@@ -27,7 +27,7 @@ def format_from_extension(path: Path) -> str:
 
 
 def read_file_bytes(path: Path) -> bytes:
-    if not path.exists():
+    if not path.is_file():
         raise WisalError(t("file_not_found", path=str(path)))
     raw = path.read_bytes()
     if len(raw) == 0:
